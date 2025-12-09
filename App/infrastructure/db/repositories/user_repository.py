@@ -9,13 +9,13 @@ from App.infrastructure.log.logger import logger
 
 class SQLAlchemyUserRepository(UserRepositoryProtocol):
     def __init__(
-        self, session: async_sessionmaker[AsyncSession],
+        self, session_maker: async_sessionmaker[AsyncSession],
     ) -> None:
-        self._session = session
+        self._session_maker = session_maker
     
     async def add_user(self, user: User) -> None:
         try:
-            async with self._session() as session:
+            async with self._session_maker() as session:
                 stmt = insert(UserModel).values(
                     {
                         "id": user.id,
@@ -36,7 +36,7 @@ class SQLAlchemyUserRepository(UserRepositoryProtocol):
             if isinstance(email, Email):
                 email = email.value
             
-            async with self._session() as session:
+            async with self._session_maker() as session:
                 stmt = select(UserModel).where(UserModel.email == email)
                 result = await session.execute(stmt)
                 user_model = result.scalar_one_or_none()
@@ -56,7 +56,7 @@ class SQLAlchemyUserRepository(UserRepositoryProtocol):
      
     async def get_user_by_id(self, user_id: str) -> Optional[User]:
         try:
-            async with self._session() as session:
+            async with self._session_maker() as session:
                 stmt = select(UserModel).where(UserModel.id == user_id)
                 result = await session.execute(stmt)
                 user_model = result.scalar_one_or_none()

@@ -8,7 +8,7 @@ class DataBaseConfig:
     def __init__(self):
         self._url_db = "sqlite+aiosqlite:///database.db"
         self._async_engine: Optional[AsyncEngine] = None
-        self._async_session: Optional[async_sessionmaker[AsyncSession]]
+        self._async_session: Optional[async_sessionmaker[AsyncSession]] = None
     
     @property
     def async_engine(self) -> AsyncEngine:

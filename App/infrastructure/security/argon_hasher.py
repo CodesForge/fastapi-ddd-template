@@ -21,7 +21,7 @@ class ArgonHashConfig:
             )
         return self._ph
     
-    async def hash_password(self, password: str) -> str:
+    async def hashed_password(self, password: str) -> str:
         return self.ph.hash(password)
     
     async def verify_password(self, hashed_password: str, password: str) -> bool:

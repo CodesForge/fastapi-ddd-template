@@ -22,18 +22,18 @@ class RegisterUserHandler:
     
     async def handle(self, cmd: RegisterUserCommand) -> None:
         async with self._uow:
-            existing = await self._uow.users.get_by_email(cmd.email)
+            existing = await self._uow.users.get_user_by_email(cmd.email)
             if existing is not None:
                 raise ValueError("Email already registered")
         
-            password_hash = await self._hasher.hash(cmd.password)
+            password_hash = await self._hasher.hashed_password(cmd.password)
             user = User(
                 id=None,
                 email=Email(cmd.email),
                 password_hash=Hash(password_hash),
             )
         
-            await self._uow.users.add(user)
+            await self._uow.users.add_user(user)
             await self._uow.commit()
         
         return AuthResultDTO(
