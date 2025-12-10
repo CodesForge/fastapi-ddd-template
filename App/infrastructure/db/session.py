@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession, AsyncEngine
+from App.config.database import get_database_settings
 from sqlalchemy.exc import SQLAlchemyError
 from typing import Optional
 from App.infrastructure.log.logger import logger
@@ -6,7 +7,7 @@ from App.infrastructure.db.models import Base
 
 class DataBaseConfig:
     def __init__(self):
-        self._url_db = "sqlite+aiosqlite:///database.db"
+        self._url_db = get_database_settings().db_url
         self._async_engine: Optional[AsyncEngine] = None
         self._async_session: Optional[async_sessionmaker[AsyncSession]] = None
     

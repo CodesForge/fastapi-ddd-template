@@ -14,6 +14,6 @@ class ArgonSettings(BaseSettings):
     memory_cost: int = Field(default=102400, alias="MEMORY_COST")
     
     model_config = SettingsConfigDict(
-        env_file="settings.env",
+        env_file="argon_settings.env",
         env_file_encoding="utf-8",
     )
